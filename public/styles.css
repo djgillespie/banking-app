@@ -1,0 +1,27 @@
+table {
+    background-color:#f2f2f2;  
+    width: 70%;
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  
+    th {
+      
+      border: 1px solid gray;
+      height: 40px;
+    }
+  
+    td {
+      border: 1px solid gray;
+      height: 40px;
+    }
+  
+  body {
+    background-repeat: no-repeat;
+    background: rgb(191,193,205);
+    background: radial-gradient(circle, rgba(191,193,205,1) 0%, rgba(255,255,255,1) 100%);
+  }
+
+  
+  
+    
