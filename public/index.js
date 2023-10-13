@@ -7,7 +7,7 @@ function Spa(){
         <HashRouter>
             <div>
             <NavBar />
-            <UserContext.Provider value={sharedContext}>
+            <UserContext.Provider value={currentUser}>
               <div className="container" style={{padding: "70px"}}>
                 <Route path="/" exact component={Home} />
                 <Route path="/CreateAccount/"  component={CreateAccount} />
