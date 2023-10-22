@@ -39,21 +39,6 @@ function Login() {
             // add login
             const auth  = firebase.auth();		
             const promise = auth.signInWithEmailAndPassword(email,password)
-              
-         
-        // React.useEffect(() => {
-        //     const navCreateAccount    = document.getElementById('navCreateAccount');
-        //     const navLogin            = document.getElementById('navLogin');
-        //     const navDeposit          = document.getElementById('navDeposit');
-        //     const navWithdraw         = document.getElementById('navWithdraw');
-        //     const navBalance          = document.getElementById('navBalance');
-        
-        //     navCreateAccount.style.display  = "block";
-        //     navLogin.style.display          = "block";
-        //     navDeposit.style.display        = "none";
-        //     navWithdraw.style.display       = "none";
-        //     navBalance.style.display        = "none";
-        // },[])
 
         firebase.auth().onAuthStateChanged(firebaseUser => {
             if(firebaseUser){
