@@ -1,42 +1,23 @@
 const Route = ReactRouterDOM.Route;
 const Link = ReactRouterDOM.Link;
 const HashRouter = ReactRouterDOM.HashRouter;
-const UserContext = React.createContext();
+const UserContext = React.createContext(null);
 const DisplayContext = React.createContext();
 
-const currentUser = {
-    name: 'abel',
-    email: 'abel@mit.edu',
-    password: 'secret',
-    balance: 100
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyDYS5JB4tseN6tekSQlU38AazMnu5UdBkI",
+    authDomain: "bank-app-861eb.firebaseapp.com",
+    projectId: "bank-app-861eb",
+    storageBucket: "bank-app-861eb.appspot.com",
+    messagingSenderId: "65826269344",
+    appId: "1:65826269344:web:3979e16d0a14e5fe0701c5"
 };
-const balance = currentUser.balance;
-const updateBalance = () => {};
-const sharedContext = {
-    users: [{name:"abel", email:"abel@mit.edu", password:"secret", balance:100},{name:"Jane Doe", email:"jane@me.com", password:"Access123", balance:100}, {name:"Peter Parker", email:"peter@mit.edu", password:"Passcode321", balance:100}, {name: "John Smith", email:"john@msn.com", password:"Letmein33", balance:100}],
-    setUsers: () => {},
-    UserContext: UserContext,
-    balance: balance,
-    updateBalance: updateBalance
-}
-// window.UserContext = UserContext;
-// window.balance = balance;
-// window.updateBalance = updateBalance;
-// window.sharedContext = sharedContext;
-
-function App() {
-    const [users, setUsers]  = useState([currentUser]);
-    sharedContext.users = users;
-    sharedContext.setUsers = setUsers;
-
-    return (
-        <UserContext.Provider value={sharedContext}>
-            {children}
-        </UserContext.Provider>
-    )
-}
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 function Card(props){
+    
     function classes(){
         const bg = props.bgcolor ? ' bg-' + props.bgcolor : ' ';
         const txt = props.txtcolor ? ' text-' + props.txtcolor: ' text-white';
@@ -46,9 +27,9 @@ function Card(props){
     return (
         <UserContext.Consumer>
             {() => (
-            <div className={classes()} style={{maxWidth: "35rem", margin: "auto"}}>
+            <div className={classes()} style={{maxWidth: "35rem", margin: "auto", border: "2px solid DarkGray"}}>
                 <img src="pillars_top.png" className="card-img-top"></img>
-                <div className="card-header">{props.header}</div>
+                <div className="card-header"><h3>{props.header}</h3></div>
                 <div className="card-body">
                     {props.title && (<h5 className="card-title">{props.title}</h5>)}
                     {props.text && (<p className="card-text">{props.text}</p>)}

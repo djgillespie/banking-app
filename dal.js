@@ -1,15 +1,24 @@
-const MongoClient = require('mongodb').MongoClient;
+//const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const url = 'mongodb+srv://djgillespie611:b3nFX7kj4KuU8ks@cluster0.brhlryj.mongodb.net/?retryWrites=true&w=majority';
+//const url = 'mongodb://localhost:27017'; 
 let db = null;
 
 // connect to mongo
-MongoClient.connect(url, async function (err, client) {
-    await client.connect();
+async function connect(err, client) {
+    await mongoose.connect(url);
     console.log("Connected successfully to db server");
+    //db = client.db('admin');
+}
 
-    // connect to myproject database
-    db = client.db('myproject');
-});
+connect();
+// MongoClient.connect(url, async function (err, client) {
+//     await client.connect();
+//     console.log("Connected successfully to db server");
+
+//     // connect to myproject database
+//     db = client.db('Project 0');
+// });
 
 // create user account using the collection.insertOne function
 function create(name, email, password) {
@@ -25,7 +34,7 @@ function create(name, email, password) {
 // find user account 
 function find(email) {
     return new Promise((resolve, reject) => {
-        const customers = db
+        const users = db
             .collection('users')
             .find({ email: email })
             .toArray(function (err, docs) {
@@ -37,7 +46,7 @@ function find(email) {
 // find user account
 function findOne(email) {
     return new Promise((resolve, reject) => {
-        const customers = db
+        const users = db
             .collection('users')
             .findOne({ email: email })
             .then((doc) => resolve(doc))
@@ -48,7 +57,7 @@ function findOne(email) {
 // update - deposit/withdraw amount
 function update(email, amount) {
     return new Promise((resolve, reject) => {
-        const customers = db
+        const users = db
             .collection('users')
             .findOneAndUpdate(
                 { email: email },
@@ -66,7 +75,7 @@ function update(email, amount) {
 // return all users by using the collection.find method
 function all() {
     return new Promise((resolve, reject) => {
-        const customers = db
+        const users = db
             .collection('users')
             .find({})
             .toArray(function(err, docs) {

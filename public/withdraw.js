@@ -2,21 +2,18 @@ function Withdraw(){
     const [show, setShow] = React.useState(true);
     const [status, setStatus] = React.useState('');
     const [withdraw, setWithdraw] = React.useState('');
-    let balance = currentUser.balance;
-    const sharedContext = window.sharedContext || {};
-    const updateBalance = sharedContext.updateBalance || (() => {});
+    const [balance, setBalance] = React.useState('');
 
 
     const handleWithdrawal = () => {
         const newBalance = balance - parseInt(withdraw);
-        updateBalance(newBalance);
+        setBalance(newBalance);
         setStatus("Withdrawal complete");
-        sharedContext.balance = newBalance;
         
     }
-    React.useEffect(() => {
-        sharedContext.updateBalance = updateBalance;
-    }, [updateBalance, sharedContext]);
+    // React.useEffect(() => {
+    //     sharedContext.updateBalance = updateBalance;
+    // }, [updateBalance, sharedContext]);
 
 
     return (
