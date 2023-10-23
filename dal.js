@@ -1,14 +1,14 @@
-//const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
-const url = 'mongodb+srv://djgillespie611:b3nFX7kj4KuU8ks@cluster0.brhlryj.mongodb.net/?retryWrites=true&w=majority';
-//const url = 'mongodb://localhost:27017'; 
+//const url = 'mongodb+srv://djgillespie611:b3nFX7kj4KuU8ks@cluster0.brhlryj.mongodb.net/?retryWrites=true&w=majority';
+const url = 'mongodb://localhost:27017/bank_app'; 
 let db = null;
 
 // connect to mongo
-async function connect(err, client) {
-    await mongoose.connect(url);
+async function connect() {
+    client = await MongoClient.connect(url);
     console.log("Connected successfully to db server");
-    //db = client.db('admin');
+    db = client.db('bank_app');
 }
 
 connect();
