@@ -38,41 +38,31 @@ function Login() {
             if (!validate(password, 'password')) return;
             // add login
             const auth  = firebase.auth();		
-            const promise = auth.signInWithEmailAndPassword(email,password)
+            const promise = auth.signInWithEmailAndPassword(email, password);
 
-        firebase.auth().onAuthStateChanged(firebaseUser => {
+        return auth.onAuthStateChanged((firebaseUser) => {
             if(firebaseUser){
                 console.log(firebaseUser);
                 console.log(email, password);
-                
+                fetch(`/account/login/${email}/${password}`)
+                .then(response => response.text())
+                .then(text => {
                     try {
                         const data = JSON.parse(text);
-                        setSuccess(true);
-                        setAuthUser(data.name);
+                        setAuthUser(firebaseUser);
                         ctx.user = data.name;
                         ctx.email = data.email;
-                        console.log(userCredential);
+                        setSuccess(true);
                   } catch {
                     setMessage(text);
                     setSuccess(false);
                     setShow(false);
+                    console.log(message);
                     }
-               
-                navLogin.style.display  = 'none';
-                navCreateAccount.style.display = 'none';
-                navDeposit.style.display = 'block';
-                navWithdraw.style.display = 'block';
-                navBalance.style.display = 'block';
-                    
+                });
             } else {
                 console.log("user is not logged in");
-                navLogin.style.display  = 'block';
-                navCreateAccount.style.display = 'block';
-                navDeposit.style.display = 'none';
-                navWithdraw.style.display = 'none';
-                navBalance.style.display = 'none';
             }
-       
             promise.catch((e) => {
                 console.log(e.message)
             })    
@@ -120,7 +110,7 @@ function Login() {
             <>
                 <h6>Invalid Credentials</h6> 
                 <button type="submit" className="btn btn-light" onClick={() => props.setShow(true)}>Try Again</button><br/><br/>
-                <h6>{message}</h6>
+                <h6>Don't have an account?</h6>
                 <a href="#/createaccount/">
                     <button type="submit" className="btn btn-light" onClick={() => props.setShow(true)}>Create Account</button>
                 </a>

@@ -1,6 +1,6 @@
 
 function Spa(){
-    const [authUser, setAuthUser] = React.useState(null);
+    const [authUser, setAuthUser] = React.useState('');
         React.useEffect(() => {
             const auth = firebase.auth();
             const listen = auth.onAuthStateChanged(auth, (user) =>{
@@ -17,7 +17,7 @@ function Spa(){
     
 
     const userSignOut = () => {
-        signOut(auth).then(() => {
+        return signOut(auth).then(() => {
             console.log('signed out')
         }).catch(error => console.log(error))
     }
