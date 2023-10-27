@@ -2,7 +2,9 @@
 function CreateAccount(){
     const [show, setShow] = React.useState(true);
     const [status, setStatus] = React.useState('');
-    
+    // handle on firebase db
+    const db = firebase.database().ref('users');
+
     return (
         <Card 
             bgcolor="primary"
@@ -34,12 +36,37 @@ function CreateAccount(){
             }
             return true;
         }
+
+        const getValue = (id) => {
+            return document.getElementById(id).value;
+        }
+        
+
+        //document.getElementById("createForm").addEventListener("submit", handleCreate());
         
         const handleCreate = (e) => {
             e.preventDefault();
+
             if (!validate(name, 'name')) return;
             if (!validate(email, 'email')) return;
             if (!validate(password, 'password')) return;
+
+            
+            
+            const saveUser = (name, email, password) => {
+                var newForm = db.push();
+            
+                newForm.set({
+                    name: name,
+                    email: email,
+                    password: password,
+                    balance: 100
+                })
+            }
+            setName(getValue('name'));
+            setEmail(getValue('email'));
+            setPassword(getValue('password'));
+            saveUser(name, email, password);
 
             const auth = firebase.auth();
             const promise = auth.createUserWithEmailAndPassword(email,password);
@@ -51,15 +78,15 @@ function CreateAccount(){
                     console.log(data);
                 })();
             })
-            
             promise.catch((e) => console.log(e.message));
             props.setShow(false);
         }
 
         return (
-            <form onSubmit={handleCreate}>
+            <form id="createForm" onSubmit={handleCreate}>
                 Name <br/>
                 <input type="input" 
+                id="name"
                 className="form-control" 
                 placeholder="Enter name"
                 value={name} 
@@ -67,6 +94,7 @@ function CreateAccount(){
 
                 Email Address <br/>
                 <input type="input" 
+                id="email"
                 className="form-control" 
                 placeholder="Enter email"
                 value={email} 
@@ -74,6 +102,7 @@ function CreateAccount(){
 
                 Password <br/>
                 <input type="password" 
+                id="password"
                 className="form-control" 
                 placeholder="Enter password"
                 value={password} 

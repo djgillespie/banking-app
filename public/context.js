@@ -8,6 +8,7 @@ const DisplayContext = React.createContext();
 var firebaseConfig = {
     apiKey: "AIzaSyDYS5JB4tseN6tekSQlU38AazMnu5UdBkI",
     authDomain: "bank-app-861eb.firebaseapp.com",
+    databaseURL: "https://bank-app-861eb-default-rtdb.firebaseio.com",
     projectId: "bank-app-861eb",
     storageBucket: "bank-app-861eb.appspot.com",
     messagingSenderId: "65826269344",
