@@ -3,7 +3,7 @@ function CreateAccount(){
     const [show, setShow] = React.useState(true);
     const [status, setStatus] = React.useState('');
     // handle on firebase db
-    const db = firebase.database().ref('users');
+    const db = firebase.database();
 
     return (
         <Card 
@@ -41,9 +41,6 @@ function CreateAccount(){
             return document.getElementById(id).value;
         }
         
-
-        //document.getElementById("createForm").addEventListener("submit", handleCreate());
-        
         const handleCreate = (e) => {
             e.preventDefault();
 
@@ -51,34 +48,28 @@ function CreateAccount(){
             if (!validate(email, 'email')) return;
             if (!validate(password, 'password')) return;
 
-            
-            
-            const saveUser = (name, email, password) => {
-                var newForm = db.push();
-            
-                newForm.set({
-                    name: name,
-                    email: email,
-                    password: password,
-                    balance: 100
-                })
-            }
-            setName(getValue('name'));
-            setEmail(getValue('email'));
-            setPassword(getValue('password'));
-            saveUser(name, email, password);
-
             const auth = firebase.auth();
-            const promise = auth.createUserWithEmailAndPassword(email,password);
-            promise.then(() => {
-                const url = `/account/create/${name}/${email}/${password}`;
-                (async () => {
-                    var res = await fetch(url);
-                    var data = await res.json();
-                    console.log(data);
-                })();
+            auth.createUserWithEmailAndPassword(email,password)
+            .then(function() {
+                var user = auth.currentUser;
+
+                // add user to firebase
+                var dbRef = db.ref();
+
+                // create user data
+                var user_data = {
+                    uid: user.uid,
+                    name: name,
+                    email: user.email,
+                    balance: 100
+                }
+
+                // push to firebase database
+                dbRef.child('/users/' + user.uid).set(user_data);
             })
-            promise.catch((e) => console.log(e.message));
+            .catch(function(error) {
+                console.log(error.message);
+            })
             props.setShow(false);
         }
 

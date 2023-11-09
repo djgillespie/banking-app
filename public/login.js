@@ -3,14 +3,13 @@ function Login() {
     const [status, setStatus] = React.useState('');
     const [user, setUser] = React.useState('');
     const [success, setSuccess] = React.useState(false);
-    const [message, setMessage] = React.useState("");
-    const ctx = React.useContext(UserContext);
     // get elements
     const navCreateAccount = document.getElementById('navCreateAccount');
     const navLogin = document.getElementById('navLogin');
     const navDeposit = document.getElementById('navDeposit');
     const navWithdraw = document.getElementById('navWithdraw');
     const navBalance = document.getElementById('navBalance');
+    
      
     return (
         <Card 
@@ -18,11 +17,11 @@ function Login() {
             header="Login"
             status={status}
             body={
-                show ? (
-                <LoginForm setUser ={setUser} setShow={setShow} setStatus = {setStatus}/> 
-                ) : (
-                <LoginMsg setShow={setShow} setStatus ={setStatus}/>
-            ) 
+                show ? 
+                <LoginForm setUser={setUser} setShow={setShow} setStatus={setStatus}/> 
+                 : 
+                <LoginMsg setShow={setShow} setStatus={setStatus}/>
+            
             } 
         />
     );
@@ -30,43 +29,47 @@ function Login() {
     function LoginForm(){
         const [email, setEmail] = React.useState('');
         const [password, setPassword] = React.useState('');
-        const [authUser, setAuthUser] = React.useState('');
+        var db = firebase.database();
 
         const handleLogin = (e) => {
             e.preventDefault();
             if (!validate(email, 'email')) return;
             if (!validate(password, 'password')) return;
             // add login
-            const auth  = firebase.auth();		
-            const promise = auth.signInWithEmailAndPassword(email, password);
-
-        return auth.onAuthStateChanged((firebaseUser) => {
-            if(firebaseUser){
-                console.log(firebaseUser);
-                console.log(email, password);
-                fetch(`/account/login/${email}/${password}`)
-                .then(response => response.text())
-                .then(text => {
-                    try {
-                        const data = JSON.parse(text);
-                        setAuthUser(firebaseUser);
-                        ctx.user = data.name;
-                        ctx.email = data.email;
-                        setSuccess(true);
-                  } catch {
-                    setMessage(text);
+            const auth = firebase.auth();
+            authenticate();
+            
+            async function authenticate () {
+                let response = await auth.signInWithEmailAndPassword(email, password);
+                return response; 
+            }
+            authenticate().then((result) => {
+                console.log(result);
+                    setSuccess(true);
+                    setShow(false);
+                    setUser(result.user.email);
+                    console.log(user);
+                    return user;
+                })
+                // .then(function() {
+                //     console.log(user);
+                //     get(user);
+                // })
+                .catch(function(error) {
+                    var error_message = error.message;
                     setSuccess(false);
                     setShow(false);
-                    console.log(message);
-                    }
-                });
-            } else {
-                console.log("user is not logged in");
+                    console.log(error_message);
+                })
+           
+            
+            function get(user) {
+                var userId = result.user.uid;
+                setUser(db.ref('/users/' + userId + '/name').once('value'));
+                console.log(user);
+                return user;
             }
-            promise.catch((e) => {
-                console.log(e.message)
-            })    
-         });
+            
         }
         return (
             <form onSubmit={handleLogin}>
@@ -101,7 +104,7 @@ function Login() {
     function LoginMsg(props){
         return success ? (
             <>
-                <h5>Hello, {user}</h5>
+                <h5>Signed in as {user}</h5>
                 <a href="#/balance/">
                     <button type="submit" className="btn btn-light" onClick={() => props.setShow(true)}>View Balance</button>
                 </a>
@@ -118,3 +121,4 @@ function Login() {
         );
     }
 }
+

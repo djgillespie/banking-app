@@ -1,9 +1,17 @@
 function Deposit(){
     const [show, setShow] = React.useState(true);
     const [status, setStatus] = React.useState(true);
-    const [currentBalance, setCurrentBalance] = React.useState('');
-    const ctx = React.useContext(UserContext);
+    const auth = firebase.auth();
+    const db = firebase.database();
+    const id = auth.currentUser.uid;
+    var currentBalance = getCurrentBalance();
 
+    function getCurrentBalance() {
+        db.ref('users/' + id + '/balance').once("value", snap => {
+            currentBalance = parseInt(snap.val());
+            console.log(snap.val())
+        })
+    }
     return (
         <Card 
             bgcolor="success"
@@ -21,7 +29,7 @@ function Deposit(){
     function DepositMessage(props) {
         return (
           <>
-            <span className="balance-information">Account Balance ${parseInt(currentBalance)}.00</span>
+            <span className="balance-information">Account Balance ${currentBalance}.00</span>
             <br />
             <button type="submit" className="btn btn-light" onClick={() => {props.setShow(true); props.setStatus('');}}>Deposit</button>
           </>
@@ -48,17 +56,17 @@ function Deposit(){
             if (!validate(Number(deposit))) return;
 
             var newBalance = (currentBalance + parseInt(deposit));
-            setCurrentBalance(parseInt(newBalance));
+            currentBalance = newBalance;
             setStatus("Deposit complete");
             setShow(false); 
 
-            ctx.balance.toString();
-            const url = `/account/deposit/${ctx.email}/${ctx.balance}`;
-            (async () => {
-                var res = await fetch(url);
-                var data = await res.json();
-                console.log(data);
-            })();
+            pushUserBalance(currentBalance);
+            // push new balance to db
+            function pushUserBalance() {
+                db.ref('/users/' + id + '/balance').set(currentBalance);
+                setStatus("Deposit complete");
+                //setShow(false);
+            }
         }
         return (
             <>

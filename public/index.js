@@ -1,35 +1,47 @@
-
 function Spa(){
-    const [authUser, setAuthUser] = React.useState('');
-        React.useEffect(() => {
-            const auth = firebase.auth();
-            const listen = auth.onAuthStateChanged(auth, (user) =>{
-                if (user) {
-                    setAuthUser(user);
-                } else {
-                    setAuthUser(null);
-                }
-            });
-            return () => {
-                listen();
-            }
-        }, []);
+    const user_data = React.useState([]);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    const userData = null;
+    var authUser = false;
     
+    document.addEventListener("DOMContentLoaded", function() {
+        auth.onAuthStateChanged(user =>{
+            if (user) {
+                const userId = user.uid;
+                const userRef = db.ref('users/' + userId);
+                authUser = true;
 
+                userRef.on('value', (snapshot) => {
+                    userData = snapshot.val();
+                    console.log(userData);
+                    if (userData) {
+                        const userName = userData.name;
+                        console.log(userName);
+                        const userInfoElement = document.getElementById("login-status");
+                        userInfoElement.innerHTML = `Signed in as ${userName} <button onClick="userSignOut()">Sign Out</button>`;
+                    }
+                    return userData;
+                });
+            } else {
+                const userInfoElement = document.getElementById('login-status');
+                userInfoElement.innerHTML = "You are not signed in";
+            }
+        });
+    });
     const userSignOut = () => {
         return signOut(auth).then(() => {
             console.log('signed out')
         }).catch(error => console.log(error))
     }
-    
     return( 
         <HashRouter>
             <div>
             <NavBar />
-            <div className="login-status">
-                {authUser ? <><p>{`Signed in as ${authUser.email}`}</p><button onClick={userSignOut}>Sign Out</button></> : <><p>You are not signed in</p></>}
+            <div className="login-status" id="login-status">
+            {authUser ? <><p>{`Signed in as ${userData.email}`}</p><button onClick={userSignOut}>Sign Out</button></> : <><p>You are not signed in</p></>}
             </div>
-            <UserContext.Provider value={{name:'',email:'',password:'',balance:0}}>
+            <UserContext.Provider value={userData}>
               <div className="container" style={{padding: "70px"}}>
                 <Route path="/" exact component={Home} />
                 <Route path="/CreateAccount/"  component={CreateAccount} />

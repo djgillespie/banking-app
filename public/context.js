@@ -4,19 +4,6 @@ const HashRouter = ReactRouterDOM.HashRouter;
 const UserContext = React.createContext(null);
 const DisplayContext = React.createContext();
 
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyDYS5JB4tseN6tekSQlU38AazMnu5UdBkI",
-    authDomain: "bank-app-861eb.firebaseapp.com",
-    databaseURL: "https://bank-app-861eb-default-rtdb.firebaseio.com",
-    projectId: "bank-app-861eb",
-    storageBucket: "bank-app-861eb.appspot.com",
-    messagingSenderId: "65826269344",
-    appId: "1:65826269344:web:3979e16d0a14e5fe0701c5"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
 function Card(props){
     
     function classes(){
