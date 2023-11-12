@@ -45,4 +45,5 @@ Distributed under the MIT license.
 
 ## Contact
 Diane Gillespie - [LinkedIn](https://www.linkedin.com/in/dianejgillespie/)
+
 Project Link - [https://github.com/djgillespie/banking-app.git](https://github.com/djgillespie/banking-app.git)
