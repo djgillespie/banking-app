@@ -1,18 +1,23 @@
 function AllData(){
-    const {data, setData} = React.useState('');
-
+    const [users, setUsers] = React.useState('');
+   
     React.useEffect(() => {
         fetch('/account/all')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setData(JSON.stringify(data));
-            });
-    }, []);
+        .then(response => response.json())
+        .then(data => {
+            console.log('data: ' + data);
+            setUsers(JSON.stringify(data));
+        });
+    },[]);
+        
+    
+    console.log('users: ' + users);
+    
     return (
         <>
-        <h4>All Data</h4>
-        {data};
+            <h3>All User Data</h3> 
+            {users}
         </>
-    );
+    )
+    
 }

@@ -3,13 +3,6 @@ function Login() {
     const [status, setStatus] = React.useState('');
     const [user, setUser] = React.useState('');
     const [success, setSuccess] = React.useState(false);
-    // get elements
-    const navCreateAccount = document.getElementById('navCreateAccount');
-    const navLogin = document.getElementById('navLogin');
-    const navDeposit = document.getElementById('navDeposit');
-    const navWithdraw = document.getElementById('navWithdraw');
-    const navBalance = document.getElementById('navBalance');
-    
      
     return (
         <Card 
@@ -51,10 +44,6 @@ function Login() {
                     console.log(user);
                     return user;
                 })
-                // .then(function() {
-                //     console.log(user);
-                //     get(user);
-                // })
                 .catch(function(error) {
                     var error_message = error.message;
                     setSuccess(false);

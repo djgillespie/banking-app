@@ -2,9 +2,7 @@
 function CreateAccount(){
     const [show, setShow] = React.useState(true);
     const [status, setStatus] = React.useState('');
-    // handle on firebase db
-    const db = firebase.database();
-
+    
     return (
         <Card 
             bgcolor="primary"
@@ -36,10 +34,6 @@ function CreateAccount(){
             }
             return true;
         }
-
-        const getValue = (id) => {
-            return document.getElementById(id).value;
-        }
         
         const handleCreate = (e) => {
             e.preventDefault();
@@ -51,21 +45,13 @@ function CreateAccount(){
             const auth = firebase.auth();
             auth.createUserWithEmailAndPassword(email,password)
             .then(function() {
-                var user = auth.currentUser;
-
-                // add user to firebase
-                var dbRef = db.ref();
-
-                // create user data
-                var user_data = {
-                    uid: user.uid,
-                    name: name,
-                    email: user.email,
-                    balance: 100
-                }
-
-                // push to firebase database
-                dbRef.child('/users/' + user.uid).set(user_data);
+                // create user in mongodb
+                const url = `/account/create/${name}/${email}/${password}`;
+                (async () => {
+                    var res = await fetch(url);
+                    var data = await res.json();
+                    console.log(data);
+                })();
             })
             .catch(function(error) {
                 console.log(error.message);
