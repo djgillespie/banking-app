@@ -14,15 +14,19 @@ This banking application is the final Capstone project for the MIT web developme
 
 ## Getting Started
 1. Install npm
+
 ```npm install npm@latest```
 
 2. Clone the repo
+
 ```git clone https://github.com/djgillespie/banking-app.git```
 
 3. Install npm packages
+
 ```npm install```
 
 4. Run node server
+
 ```node index.js```
 
 5. Navigate to [http://localhost:3000/](http://localhost:3000/)
