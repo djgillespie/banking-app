@@ -33,8 +33,11 @@ This banking application is the final Capstone project for the MIT web developme
 
 ## Usage
 Create Account - new users can create an account
+
 Login - returning users can log into their account along with new users after registration
+
 Deposit/Withdraw - users can make a deposit or withdrawal
+
 Balance - users can view their current balance
 
 ## License
