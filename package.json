@@ -7,6 +7,10 @@
         "build": "npm install",
         "start": "node index.js"
     },
+     "engines": {
+        "node": "20.2.0",
+        "npm": "9.6.6"
+     },
     "keywords": [],
     "author": "",
     "license": "MIT",
