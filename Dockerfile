@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:14-slim
+FROM node:14-slim
 
 # Step 3.1 - Add working directory
 WORKDIR /app
