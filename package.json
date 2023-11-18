@@ -7,17 +7,17 @@
         "build": "npm install",
         "start": "node index.js"
     },
-<<<<<<< HEAD
+
     "engines": {
         "node": "20.2.0",
         "npm": "9.6.6"
     },
-=======
+
      "engines": {
         "node": "20.2.0",
         "npm": "9.6.6"
      },
->>>>>>> 2e9b4019354dcf6bb4ad042a7012f9d6e0f9983d
+
     "keywords": [],
     "author": "",
     "license": "MIT",
